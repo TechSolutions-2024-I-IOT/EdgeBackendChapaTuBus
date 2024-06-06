@@ -12,7 +12,7 @@ public class RestSendDataToBackendCloudController {
     private RestTemplate restTemplate;
 
     //private static final String CLOUD_BACKEND_URL = "http://localhost:8081/api/v1/sensor-data";
-    private static final String CLOUD_BACKEND_URL = "https://sensordatacloudbackend.azurewebsites.net/api/v1/sensor-data";
+    private static final String CLOUD_BACKEND_URL = "https://chapatubusbackend.azurewebsites.net/api/v1/sensor-data";
 
     public void sendSensorData(SensorData sensorData){
         restTemplate.postForObject(CLOUD_BACKEND_URL,sensorData,SensorData.class);
