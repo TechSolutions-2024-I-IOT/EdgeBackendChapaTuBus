@@ -9,6 +9,7 @@ import lombok.Setter;
 import org.apache.logging.log4j.util.Strings;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @Entity
@@ -27,16 +28,17 @@ public class HeartBeatBatch {
     private List<HeartBeatPulse> heartBeatPulses;
 
     public HeartBeatBatch() {
-        this.smartBandId= null;
+        this.smartBandId = null;
         this.heartBeatPulses = new ArrayList<>();
     }
 
-    public HeartBeatBatch(CreateHeartBeatBatchCommand command){
-        this.smartBandId=command.smartBandId();
+    public HeartBeatBatch(CreateHeartBeatBatchCommand command) {
+        this.smartBandId = command.smartBandId();
+        this.heartBeatPulses = new ArrayList<>();
     }
 
-    public HeartBeatPulse receiveNewPulse(ReceiveHeartBeatPulseInformationCommand command){
-        HeartBeatPulse heartBeatPulse= HeartBeatPulse.builder()
+    public HeartBeatPulse receiveNewPulse(ReceiveHeartBeatPulseInformationCommand command) {
+        HeartBeatPulse heartBeatPulse = HeartBeatPulse.builder()
                 .heartBeatBatch(this)
                 .pulse(command.pulse())
                 .build();
