@@ -1,15 +1,13 @@
 package com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.aggregates;
 
-import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.commands.CreateHeartBeatBatchCommand;
-import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.commands.ReceiveHeartBeatPulseInformationCommand;
+import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.commands.HeartBeat.CreateHeartBeatBatchCommand;
+import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.commands.HeartBeat.ReceiveHeartBeatPulseInformationCommand;
 import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.entities.HeartBeatPulse;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.logging.log4j.util.Strings;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 @Entity
