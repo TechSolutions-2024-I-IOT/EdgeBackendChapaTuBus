@@ -7,7 +7,7 @@ public class CreateHeartBeatBatchCommandFromResourceAssembler {
 
     public static CreateHeartBeatBatchCommand toCommand(CreateHeartBeatBatchResource resource){
         return new CreateHeartBeatBatchCommand(
-                resource.name()
+                resource.smartBandId()
         );
     }
 }

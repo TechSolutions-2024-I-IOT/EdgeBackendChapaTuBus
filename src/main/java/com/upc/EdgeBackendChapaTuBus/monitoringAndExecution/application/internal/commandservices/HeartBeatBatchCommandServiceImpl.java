@@ -33,7 +33,7 @@ public class HeartBeatBatchCommandServiceImpl implements HeartBeatBatchCommandSe
     @Override
     public Optional<HeartBeatPulse> handle(ReceiveHeartBeatPulseInformationCommand command) {
 
-        Optional<HeartBeatBatch> heartBeatBatchOpt= heartBeatBatchRepository.findById(command.HeartBeatBatchId());
+        Optional<HeartBeatBatch> heartBeatBatchOpt= heartBeatBatchRepository.findBySmartBandId(command.smartBandId());
 
         if(heartBeatBatchOpt.isEmpty())return Optional.empty();
 

@@ -8,7 +8,7 @@ public class HeartBeatchBatchCreatedFromEntityAssembler {
     public static HeartBeatBatchCreated toResourceFromEntity(HeartBeatBatch entity){
         return new HeartBeatBatchCreated(
                 entity.getId(),
-                entity.getName()
+                entity.getSmartBandId()
         );
     }
 }

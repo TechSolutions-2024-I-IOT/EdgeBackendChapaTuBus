@@ -21,18 +21,18 @@ public class HeartBeatBatch {
     @Column(name = "id")
     private Long id;
 
-    private String name;
+    private Long smartBandId;
 
     @OneToMany(mappedBy = "heartBeatBatch",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<HeartBeatPulse> heartBeatPulses;
 
     public HeartBeatBatch() {
-        this.name= Strings.EMPTY;
+        this.smartBandId= null;
         this.heartBeatPulses = new ArrayList<>();
     }
 
     public HeartBeatBatch(CreateHeartBeatBatchCommand command){
-        this.name=command.name();
+        this.smartBandId=command.smartBandId();
     }
 
     public HeartBeatPulse receiveNewPulse(ReceiveHeartBeatPulseInformationCommand command){

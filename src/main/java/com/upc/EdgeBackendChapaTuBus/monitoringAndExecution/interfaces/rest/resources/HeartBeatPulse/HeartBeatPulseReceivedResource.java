@@ -3,6 +3,6 @@ package com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.interfaces.rest.res
 public record HeartBeatPulseReceivedResource(
         Long id,
         String pulse,
-        int heartBeatBatchId
+        int smartBandId
 ) {
 }

@@ -2,6 +2,6 @@ package com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.interfaces.rest.res
 
 public record HeartBeatBatchCreated(
         Long id,
-        String name
+        Long smartBandId
 ){
 }

@@ -6,7 +6,7 @@ import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.interfaces.rest.reso
 public class ReceiveHeartBeatPulseInformationCommandFromResourceAssembler {
     public static ReceiveHeartBeatPulseInformationCommand toCommand(ReceiveHeartBeatPulseResource resource){
         return new ReceiveHeartBeatPulseInformationCommand(
-                (long) resource.heartBeatBatchId(),
+                (long) resource.smartBandId(),
                 resource.pulse()
         );
     }
