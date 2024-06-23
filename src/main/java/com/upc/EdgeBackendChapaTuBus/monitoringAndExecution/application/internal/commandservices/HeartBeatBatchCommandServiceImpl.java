@@ -1,6 +1,5 @@
 package com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.application.internal.commandservices;
 
-import com.upc.EdgeBackendChapaTuBus.SensorData.SensorData;
 import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.aggregates.HeartBeatBatch;
 import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.commands.HeartBeat.CreateHeartBeatBatchCommand;
 import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.commands.HeartBeat.ReceiveHeartBeatPulseInformationCommand;
@@ -78,13 +77,14 @@ public Optional<HeartBeatPulse> handle(ReceiveHeartBeatPulseInformationCommand c
                 .sum() / lastTenPulsesService.size();
         System.out.println("Calculated average pulse: " + average);
 
-        // Crear un objeto de datos para enviar
+        //Actualizar esta función para mandarle la info al backend cloud
+/*        // Crear un objeto de datos para enviar
         SensorData sensorData = new SensorData();
         sensorData.setPulse(String.valueOf(average));
 
         // Enviar al CloudBackend
         restTemplate.postForObject("https://chapatubusbackend.azurewebsites.net/api/v1/sensor-data", sensorData, SensorData.class);
-        System.out.println("Sent average pulse to cloud backend.");
+        System.out.println("Sent average pulse to cloud backend.");*/
     }
     @Override
     public Optional<HeartBeatPulse> handle(SendHeartBeatAverageToCloudBackendCommand command) {
