@@ -11,11 +11,11 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class WeightBatchServiceImpl implements WeightBatchCommandService {
+public class WeightBatchCommandServiceImpl implements WeightBatchCommandService {
 
     private final WeightBatchRepository weightBatchRepository;
 
-    public WeightBatchServiceImpl(WeightBatchRepository weightBatchRepository) {
+    public WeightBatchCommandServiceImpl(WeightBatchRepository weightBatchRepository) {
         this.weightBatchRepository = weightBatchRepository;
     }
 
