@@ -23,6 +23,4 @@ public class RealTimeCapacity {
     @ManyToOne
     @JoinColumn(name = "weight_batch_id")
     private WeightBatch weightBatch;
-
-
 }
