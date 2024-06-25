@@ -3,7 +3,6 @@ package com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.comman
 public record ReceiveBusLocationInformationCommand (
         Long unitBusId,
         String latitude,
-        String longitude,
-        String speed
+        String longitude
 ) {
 }

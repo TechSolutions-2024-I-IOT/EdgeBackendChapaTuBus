@@ -15,8 +15,7 @@ public class LocationBatchResourceFromEntityAssembler {
                 .map(realTimeLocation -> new RealTimeLocationDto(
                         realTimeLocation.getId(),
                         realTimeLocation.getLatitude(),
-                        realTimeLocation.getLongitude(),
-                        realTimeLocation.getSpeed()
+                        realTimeLocation.getLongitude()
                 ))
                 .collect(Collectors.toList());
 

@@ -4,7 +4,6 @@ public record RealTimeLocationReceivedResource(
         Long id,
         String latitude,
         String longitude,
-        String speed,
         int unitBusId
 ) {
 }
