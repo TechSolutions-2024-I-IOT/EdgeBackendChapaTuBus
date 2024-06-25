@@ -4,7 +4,6 @@ import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.entitie
 import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.queries.GetAllCapacityForUnitBusIdQuery;
 
 import java.util.List;
-
-public interface WeightBatchQueryService {
+public interface RealTimeCapacityQueryService {
     List<RealTimeCapacity> handle(GetAllCapacityForUnitBusIdQuery query);
 }

@@ -3,6 +3,7 @@ package com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.application.interna
 import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.aggregates.WeightBatch;
 import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.commands.WeightBatch.CreateWeightBatchCommand;
 import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.commands.WeightBatch.ReceiveBusCapacityInformationCommand;
+import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.commands.WeightBatch.SendRealTimeCapacityToCloudBackendCommand;
 import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.entities.RealTimeCapacity;
 import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.services.WeightBatchCommandService;
 import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.infraestructure.repositories.jpa.WeightBatchRepository;
@@ -39,6 +40,15 @@ public class WeightBatchCommandServiceImpl implements WeightBatchCommandService 
         //sendBusCapacityToCloudBackend();
         return Optional.of(newRealTimeCapacity);
 
+    }
+
+    private void sendBusCapacityToCloudBackend() {
+        //TODO: Implementar la lógica de envío de la capacidad y agregar un timestamp al backend de la nube
+    }
+
+    @Override
+    public Optional<SendRealTimeCapacityToCloudBackendCommand> handle(SendRealTimeCapacityToCloudBackendCommand command) {
+        return Optional.empty();
     }
 
 }
