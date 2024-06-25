@@ -41,6 +41,7 @@ public class LocationBatch {
                 .locationBatch(this)
                 .latitude(command.latitude())
                 .longitude(command.longitude())
+                .speed(command.speed())
                 .build();
         this.realTimeLocations.add(realTimeLocation);
         return realTimeLocation;

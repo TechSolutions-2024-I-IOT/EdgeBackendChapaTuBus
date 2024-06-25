@@ -3,6 +3,7 @@ package com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.interfaces.rest.res
 public record RealTimeLocationDto(
         Long id,
         String latitude,
-        String longitude
+        String longitude,
+        String speed
 ) {
 }

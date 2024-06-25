@@ -3,6 +3,7 @@ package com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.interfaces.rest.res
 public record ReceiveRealTimeLocationResource(
         int unitBusId,
         String latitude,
-        String longitude
+        String longitude,
+        String speed
 ) {
 }

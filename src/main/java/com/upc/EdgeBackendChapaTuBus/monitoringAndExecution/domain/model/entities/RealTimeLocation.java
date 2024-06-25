@@ -19,6 +19,7 @@ public class RealTimeLocation {
 
     private String latitude;
     private String longitude;
+    private String speed;
 
     @ManyToOne
     @JoinColumn(name = "location_batch_id")
