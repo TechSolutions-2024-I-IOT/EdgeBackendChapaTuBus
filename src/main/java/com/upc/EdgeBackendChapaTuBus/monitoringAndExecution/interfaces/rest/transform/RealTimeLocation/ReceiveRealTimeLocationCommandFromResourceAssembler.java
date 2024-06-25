@@ -8,7 +8,8 @@ public class ReceiveRealTimeLocationCommandFromResourceAssembler {
         return new ReceiveBusLocationInformationCommand(
                 (long) resource.unitBusId(),
                 resource.latitude(),
-                resource.longitude()
+                resource.longitude(),
+                resource.speed()
         );
     }
 }

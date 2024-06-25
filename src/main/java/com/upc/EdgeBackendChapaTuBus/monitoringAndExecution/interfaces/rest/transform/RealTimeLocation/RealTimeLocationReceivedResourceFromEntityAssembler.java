@@ -9,6 +9,7 @@ public class RealTimeLocationReceivedResourceFromEntityAssembler {
                 entity.getId(),
                 entity.getLatitude(),
                 entity.getLongitude(),
+                entity.getSpeed(),
                 Math.toIntExact(entity.getLocationBatch().getId())
         );
     }
