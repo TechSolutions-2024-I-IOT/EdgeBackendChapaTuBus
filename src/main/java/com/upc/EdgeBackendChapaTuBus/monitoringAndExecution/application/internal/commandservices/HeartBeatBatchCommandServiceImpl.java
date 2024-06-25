@@ -23,8 +23,6 @@ public class HeartBeatBatchCommandServiceImpl implements HeartBeatBatchCommandSe
     private final HeartBeatBatchRepository heartBeatBatchRepository;
     private final RestTemplate restTemplate;
     private final LastTenPulsesService lastTenPulsesService;
-    private static final AtomicInteger currentId = new AtomicInteger(22);
-
     public HeartBeatBatchCommandServiceImpl(HeartBeatBatchRepository heartBeatBatchRepository, RestTemplate restTemplate, LastTenPulsesService lastTenPulsesService) {
         this.heartBeatBatchRepository = heartBeatBatchRepository;
         this.restTemplate = restTemplate;
@@ -54,29 +52,33 @@ public Optional<HeartBeatPulse> handle(ReceiveHeartBeatPulseInformationCommand c
 
     if (lastTenPulsesService.size() == 10) {
         System.out.println("lastTenPulses size is 10. Sending average to cloud backend.");
-        sendHeartBeatAverageToCloudBackend();
+        sendHeartBeatAverageToCloudBackend(command.smartBandId());
         lastTenPulsesService.clear();
     }
 
     return Optional.of(newHeartBeatPulse);
 }
 
-    private void sendHeartBeatAverageToCloudBackend() {
+    private void sendHeartBeatAverageToCloudBackend(Long id) {
         int average = lastTenPulsesService.getLastTenPulses().stream()
                 .mapToInt(pulse -> Integer.parseInt(pulse.getPulse()))
                 .sum() / lastTenPulsesService.size();
         System.out.println("Calculated average pulse: " + average);
 
-        Map<String, Object> sensorData = new HashMap<>();
-        sensorData.put("id", currentId.incrementAndGet());
-        sensorData.put("pulse", String.valueOf(average));
+        Long smartBandId = heartBeatBatchRepository.findById(id)
+                .map(HeartBeatBatch::getSmartBandId)
+                .orElseThrow(() -> new RuntimeException("No se pudo encontrar el SmartBandId actual"));
 
-        String cloudBackendUrl = "https://chapatubusbackend.azurewebsites.net/api/v1/sensor-data";
+        Map<String, Object> sensorData = new HashMap<>();
+        sensorData.put("SmartBandId", smartBandId);
+        sensorData.put("heartRate", average);
+
+        String cloudBackendUrl = "https://chapatubusbackend.azurewebsites.net/api/v1/smart-band/register-heart-rate-log";
 
         try {
             ResponseEntity<String> response = restTemplate.postForEntity(cloudBackendUrl, sensorData, String.class);
             if (response.getStatusCode().is2xxSuccessful()) {
-                System.out.println("Sent average pulse to cloud backend successfully.");
+                System.out.println("Sent average pulse to cloud backend successfully. SmartBandId: " + smartBandId);
             } else {
                 System.out.println("Failed to send average pulse to cloud backend. Status code: " + response.getStatusCode());
             }
