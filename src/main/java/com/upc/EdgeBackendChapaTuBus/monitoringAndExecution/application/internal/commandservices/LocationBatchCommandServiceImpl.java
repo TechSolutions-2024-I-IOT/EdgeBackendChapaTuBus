@@ -4,6 +4,7 @@ import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.aggrega
 import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.commands.LocationBatch.CreateLocationBatchCommand;
 import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.commands.LocationBatch.ReceiveBusLocationInformationCommand;
 import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.commands.LocationBatch.SendBusLocationToCloudBackendCommand;
+import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.commands.WeightBatch.CreateWeightBatchCommand;
 import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.entities.RealTimeLocation;
 import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.services.LocationBatchCommandService;
 import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.infraestructure.repositories.jpa.LocationBatchRepository;

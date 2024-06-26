@@ -2,6 +2,7 @@ package com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.interfaces.rest.tra
 
 import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.aggregates.LocationBatch;
 import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.interfaces.rest.resources.LocationBatch.DTO.RealTimeLocationDto;
+import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.interfaces.rest.resources.LocationBatch.LocationBatchCreated;
 import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.interfaces.rest.resources.LocationBatch.LocationBatchResource;
 
 import java.util.List;
