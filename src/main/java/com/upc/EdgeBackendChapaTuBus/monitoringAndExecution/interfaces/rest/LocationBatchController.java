@@ -1,18 +1,15 @@
 package com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.interfaces.rest;
 
 import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.aggregates.LocationBatch;
+import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.commands.LocationBatch.SendBusLocationToCloudBackendCommand;
 import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.entities.RealTimeLocation;
 import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.queries.GetAllLocationsForUnitBusIdQuery;
 import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.services.LocationBatchCommandService;
 import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.services.LocationBatchQueryService;
-import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.interfaces.rest.resources.LocationBatch.CreateLocationBatchResource;
-import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.interfaces.rest.resources.LocationBatch.LocationBatchCreated;
-import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.interfaces.rest.resources.LocationBatch.LocationBatchResource;
+import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.interfaces.rest.resources.LocationBatch.*;
 import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.interfaces.rest.resources.RealTimeLocation.RealTimeLocationReceivedResource;
 import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.interfaces.rest.resources.RealTimeLocation.ReceiveRealTimeLocationResource;
-import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.interfaces.rest.transform.LocationBatch.CreateLocationBatchCommandFromResourceAssembler;
-import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.interfaces.rest.transform.LocationBatch.LocationBatchCreatedFromEntityAssembler;
-import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.interfaces.rest.transform.LocationBatch.LocationBatchResourceFromEntityAssembler;
+import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.interfaces.rest.transform.LocationBatch.*;
 import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.interfaces.rest.transform.RealTimeLocation.RealTimeLocationReceivedResourceFromEntityAssembler;
 import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.interfaces.rest.transform.RealTimeLocation.ReceiveRealTimeLocationCommandFromResourceAssembler;
 import org.springframework.http.ResponseEntity;
@@ -36,9 +33,11 @@ public class LocationBatchController {
     private final LocationBatchCommandService locationBatchCommandService;
     private final LocationBatchQueryService locationBatchQueryService;
 
+
     public LocationBatchController(
             LocationBatchCommandService locationBatchCommandService,
-            LocationBatchQueryService locationBatchQueryService) {
+            LocationBatchQueryService locationBatchQueryService
+            ) {
         this.locationBatchCommandService = locationBatchCommandService;
         this.locationBatchQueryService = locationBatchQueryService;
     }
@@ -78,5 +77,11 @@ public class LocationBatchController {
         LocationBatchResource resource = LocationBatchResourceFromEntityAssembler.toResourceFromEntityAssembler(locationBatch);
 
         return ResponseEntity.ok(resource);
+    }
+
+    @PostMapping("/send-location/{unitBusId}")
+    ResponseEntity<Void> sendBusLocationToCloudBackend(@PathVariable Long unitBusId) {
+        locationBatchCommandService.handle(new SendBusLocationToCloudBackendCommand(unitBusId));
+        return ResponseEntity.ok().build();
     }
 }

@@ -1,4 +1,7 @@
 package com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.commands.LocationBatch;
 
-public class SendBusLocationToCloudBackendCommand {
+public record SendBusLocationToCloudBackendCommand(
+        Long unitBusId
+) {
+
 }
