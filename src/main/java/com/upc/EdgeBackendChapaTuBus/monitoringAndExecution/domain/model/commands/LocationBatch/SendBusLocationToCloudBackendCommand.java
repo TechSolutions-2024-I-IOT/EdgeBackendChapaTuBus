@@ -2,5 +2,5 @@ package com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.comman
 
 public record SendBusLocationToCloudBackendCommand(
         Long unitBusId
-) {
-}
+) {}
+
