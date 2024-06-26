@@ -4,6 +4,9 @@ import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.aggrega
 import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.aggregates.WeightBatch;
 import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.commands.HeartBeat.CreateHeartBeatBatchCommand;
 import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.commands.WeightBatch.CreateWeightBatchCommand;
+import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.commands.WeightBatch.ReceiveBusCapacityInformationCommand;
+import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.commands.WeightBatch.SendRealTimeCapacityToCloudBackendCommand;
+import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.entities.RealTimeCapacity;
 import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.services.WeightBatchCommandService;
 import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.infraestructure.repositories.jpa.WeightBatchRepository;
 import org.springframework.stereotype.Service;
@@ -25,5 +28,19 @@ public class WeightBatchServiceImpl implements WeightBatchCommandService {
         WeightBatch weightBatch= new WeightBatch(command);
         return Optional.of(weightBatchRepository.save(weightBatch));
     }
+    @Override
+    public Optional<RealTimeCapacity> handle(ReceiveBusCapacityInformationCommand command){
+        Optional<WeightBatch> weightBatchOpt = weightBatchRepository.findByUnitBusId(command.unitBusId());
+        if(weightBatchOpt.isEmpty()) return Optional.empty();
 
+        WeightBatch weightBatch = weightBatchOpt.get();
+        RealTimeCapacity newRealTimeCapacity = weightBatch.receiveNewCapacity(command);
+        weightBatchRepository.save(weightBatch);
+        return Optional.of(newRealTimeCapacity);
+    }
+
+    @Override
+    public Optional<RealTimeCapacity> handle(SendRealTimeCapacityToCloudBackendCommand command) {
+        return Optional.empty();
+    }
 }
