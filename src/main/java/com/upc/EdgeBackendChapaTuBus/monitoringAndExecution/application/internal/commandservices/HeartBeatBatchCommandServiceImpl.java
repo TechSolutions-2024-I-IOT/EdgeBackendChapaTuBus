@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -60,30 +61,40 @@ public Optional<HeartBeatPulse> handle(ReceiveHeartBeatPulseInformationCommand c
 }
 
     private void sendHeartBeatAverageToCloudBackend(Long id) {
-        int average = lastTenPulsesService.getLastTenPulses().stream()
-                .mapToInt(pulse -> Integer.parseInt(pulse.getPulse()))
-                .sum() / lastTenPulsesService.size();
-        System.out.println("Calculated average pulse: " + average);
 
         Long smartBandId = heartBeatBatchRepository.findById(id)
                 .map(HeartBeatBatch::getSmartBandId)
                 .orElseThrow(() -> new RuntimeException("No se pudo encontrar el SmartBandId actual"));
+        System.out.println("SmartBandId recuperado: " + smartBandId);
 
-        Map<String, Object> sensorData = new HashMap<>();
+        System.out.println("Iniciando envío de datos al cloud backend. ID recibido: " + id);
+        int average = lastTenPulsesService.getLastTenPulses().stream()
+                .mapToInt(pulse -> Integer.parseInt(pulse.getPulse()))
+                .sum() / lastTenPulsesService.size();
+        System.out.println("Calculated average pulse: " + average);
+        System.out.println("Número de pulsos utilizados para el cálculo: " + lastTenPulsesService.size());
+
+        Map<String, Object> sensorData = new LinkedHashMap<>();
         sensorData.put("SmartBandId", smartBandId);
         sensorData.put("heartRate", average);
+        System.out.println("Datos a enviar: " + sensorData);
 
         String cloudBackendUrl = "https://chapatubusbackend.azurewebsites.net/api/v1/smart-band/register-heart-rate-log";
 
         try {
+            System.out.println("Intentando enviar datos a: " + cloudBackendUrl);
             ResponseEntity<String> response = restTemplate.postForEntity(cloudBackendUrl, sensorData, String.class);
+            System.out.println("Respuesta recibida. Código de estado: " + response.getStatusCodeValue());
             if (response.getStatusCode().is2xxSuccessful()) {
                 System.out.println("Sent average pulse to cloud backend successfully. SmartBandId: " + smartBandId);
+                System.out.println("Respuesta del servidor: " + response.getBody());
             } else {
                 System.out.println("Failed to send average pulse to cloud backend. Status code: " + response.getStatusCode());
+                System.out.println("Respuesta del servidor: " + response.getBody());
             }
         } catch (Exception e) {
             System.out.println("Error sending average pulse to cloud backend: " + e.getMessage());
+            e.printStackTrace(); // Esto imprimirá el stack trace completo
         }
     }
     @Override
