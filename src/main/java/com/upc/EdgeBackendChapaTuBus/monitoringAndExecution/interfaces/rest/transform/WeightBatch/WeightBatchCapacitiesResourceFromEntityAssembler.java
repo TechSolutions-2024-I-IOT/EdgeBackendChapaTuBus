@@ -15,7 +15,7 @@ public class WeightBatchCapacitiesResourceFromEntityAssembler {
 
         return new WeightBatchCapacitiesResource(
                 weightBatch.getId(),
-                weightBatch.getUnitBusId(),
+                weightBatch.getWeightSensorId(),
                 capacityDtos
         );
     }

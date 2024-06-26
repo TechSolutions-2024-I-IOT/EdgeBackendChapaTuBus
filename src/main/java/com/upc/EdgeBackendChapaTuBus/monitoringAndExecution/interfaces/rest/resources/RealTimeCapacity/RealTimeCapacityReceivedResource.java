@@ -3,7 +3,7 @@ package com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.interfaces.rest.res
 public record RealTimeCapacityReceivedResource (
         Long id,
         String capacity,
-        int unitBusId
+        int weightSensorId
 ){
 
 }

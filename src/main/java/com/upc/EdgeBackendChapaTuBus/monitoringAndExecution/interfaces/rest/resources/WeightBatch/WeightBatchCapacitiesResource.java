@@ -6,7 +6,7 @@ import java.util.List;
 
 public record WeightBatchCapacitiesResource (
         Long weightBatchId,
-        Long unitBusId,
+        Long WeightSensorId,
         List<RealTimeCapacityDto> realTimeCapacities
 ) {
 }

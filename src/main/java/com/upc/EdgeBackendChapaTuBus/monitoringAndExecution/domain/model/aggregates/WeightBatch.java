@@ -22,18 +22,18 @@ public class WeightBatch {
     @Column(name = "id")
     private Long id;
 
-    private Long unitBusId;
+    private Long weightSensorId;
 
     @OneToMany(mappedBy = "weightBatch",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<RealTimeCapacity> realTimeCapacities;
 
     public WeightBatch() {
-        this.unitBusId = null;
+        this.weightSensorId = null;
         this.realTimeCapacities = new ArrayList<>();
     }
 
     public WeightBatch(CreateWeightBatchCommand command) {
-        this.unitBusId = command.unitBusId();
+        this.weightSensorId = command.weightSensorId();
         this.realTimeCapacities = new ArrayList<>();
     }
 

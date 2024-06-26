@@ -7,7 +7,7 @@ public class CreateWeightBatchCommandFromResourceAssembler {
 
     public static CreateWeightBatchCommand toCommandFromResource(CreateWeightBatchResource resource) {
         return new CreateWeightBatchCommand(
-                resource.unitBusId()
+                resource.weightSensorId()
         );
     }
 }
