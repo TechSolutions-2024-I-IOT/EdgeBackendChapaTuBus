@@ -3,7 +3,7 @@ package com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.interfaces.rest;
 
 import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.aggregates.WeightBatch;
 import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.entities.RealTimeCapacity;
-import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.queries.GetAllCapacityForUnitBusIdQuery;
+import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.queries.GetAllCapacityForWeightSensorIdQuery;
 import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.services.WeightBatchCommandService;
 
 import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.services.WeightBatchQueryService;
@@ -37,7 +37,7 @@ public class WeightBatchController {
         this.weightBatchCommandService = weightBatchCommandService;
         this.weightBatchQueryService = weightBatchQueryService;
     }
-    
+
     @PostMapping("/new")
     ResponseEntity<WeightBatchCreated> createWeightBatch(@RequestBody CreateWeightBatchResource createWeightBatchResource){
 
@@ -47,7 +47,7 @@ public class WeightBatchController {
                 );
 
         return weightBatch.map(actualWeightBatch->
-                    new ResponseEntity<>(WeightBatchCreatedFromEntityAssembler.toResourceFromEntity(actualWeightBatch),CREATED))
+                        new ResponseEntity<>(WeightBatchCreatedFromEntityAssembler.toResourceFromEntity(actualWeightBatch),CREATED))
                 .orElseGet(()->ResponseEntity.badRequest().build());
 
     }
@@ -58,13 +58,13 @@ public class WeightBatchController {
                 .handle(ReceiveRealTimeCapacityCommandFromResourceAssembler.toCommand(resource));
 
         return realTimeCapacity.map(actualRealTimeCapacity ->
-                new ResponseEntity<>(RealTimeCapacityReceivedResourceFromEntityAssembler.toResourceFromEntity(actualRealTimeCapacity), CREATED))
+                        new ResponseEntity<>(RealTimeCapacityReceivedResourceFromEntityAssembler.toResourceFromEntity(actualRealTimeCapacity), CREATED))
                 .orElseGet(() -> ResponseEntity.badRequest().build());
     }
 
-    @GetMapping("/capacities/{unitBusId}")
-    ResponseEntity<WeightBatchCapacitiesResource> getAllCapacitiesForUnitBusId(@PathVariable Long unitBusId){
-        List<RealTimeCapacity> capacities = weightBatchQueryService.handle(new GetAllCapacityForUnitBusIdQuery(unitBusId));
+    @GetMapping("/capacities/{weightSensorId}")
+    ResponseEntity<WeightBatchCapacitiesResource> getAllCapacitiesForWeightSensorId(@PathVariable Long weightSensorId){
+        List<RealTimeCapacity> capacities = weightBatchQueryService.handle(new GetAllCapacityForWeightSensorIdQuery(weightSensorId));
 
         if(capacities.isEmpty()){
             return ResponseEntity.notFound().build();

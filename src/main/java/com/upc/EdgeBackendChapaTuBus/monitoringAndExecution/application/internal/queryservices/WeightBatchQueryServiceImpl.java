@@ -2,7 +2,7 @@ package com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.application.interna
 
 import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.aggregates.WeightBatch;
 import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.entities.RealTimeCapacity;
-import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.queries.GetAllCapacityForUnitBusIdQuery;
+import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.queries.GetAllCapacityForWeightSensorIdQuery;
 import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.services.WeightBatchQueryService;
 import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.infraestructure.repositories.jpa.WeightBatchRepository;
 import org.springframework.stereotype.Service;
@@ -21,8 +21,8 @@ public class WeightBatchQueryServiceImpl implements WeightBatchQueryService {
     }
 
     @Override
-    public List<RealTimeCapacity> handle(GetAllCapacityForUnitBusIdQuery query) {
-        Optional<WeightBatch> weightBatchOpt = weightBatchRepository.findByUnitBusId(query.unitBusId());
+    public List<RealTimeCapacity> handle(GetAllCapacityForWeightSensorIdQuery query) {
+        Optional<WeightBatch> weightBatchOpt = weightBatchRepository.findByWeightSensorId(query.weightSensorId());
         return weightBatchOpt.map(WeightBatch::getRealTimeCapacities).orElse(Collections.emptyList());
     }
 }

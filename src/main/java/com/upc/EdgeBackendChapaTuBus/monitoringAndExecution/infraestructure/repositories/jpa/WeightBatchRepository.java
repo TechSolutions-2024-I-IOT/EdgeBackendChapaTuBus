@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface WeightBatchRepository extends JpaRepository<WeightBatch, Long> {
-    Optional<WeightBatch> findByUnitBusId(Long unitBusId);
+    Optional<WeightBatch> findByWeightSensorId(Long weightSensorId);
 }
