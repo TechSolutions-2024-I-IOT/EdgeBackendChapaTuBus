@@ -30,7 +30,7 @@ public class WeightBatchServiceImpl implements WeightBatchCommandService {
     }
     @Override
     public Optional<RealTimeCapacity> handle(ReceiveBusCapacityInformationCommand command){
-        Optional<WeightBatch> weightBatchOpt = weightBatchRepository.findByUnitBusId(command.unitBusId());
+        Optional<WeightBatch> weightBatchOpt = weightBatchRepository.findByWeightSensorId(command.weightSensorId());
         if(weightBatchOpt.isEmpty()) return Optional.empty();
 
         WeightBatch weightBatch = weightBatchOpt.get();

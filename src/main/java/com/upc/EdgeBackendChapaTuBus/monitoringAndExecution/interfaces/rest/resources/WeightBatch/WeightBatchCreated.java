@@ -2,6 +2,6 @@ package com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.interfaces.rest.res
 
 public record WeightBatchCreated(
         Long id,
-        Long unitBusId
+        Long weightSensorId
 ) {
 }

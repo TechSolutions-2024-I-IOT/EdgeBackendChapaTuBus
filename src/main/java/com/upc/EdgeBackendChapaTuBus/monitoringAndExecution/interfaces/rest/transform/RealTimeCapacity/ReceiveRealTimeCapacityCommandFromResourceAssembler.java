@@ -6,7 +6,7 @@ import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.interfaces.rest.reso
 public class ReceiveRealTimeCapacityCommandFromResourceAssembler {
     public static ReceiveBusCapacityInformationCommand toCommand(ReceiveRealTimeCapacityResource resource){
         return new ReceiveBusCapacityInformationCommand(
-                (long) resource.unitBusId(),
+                (long) resource.weightSensorId(),
                 resource.capacity()
         );
     }
