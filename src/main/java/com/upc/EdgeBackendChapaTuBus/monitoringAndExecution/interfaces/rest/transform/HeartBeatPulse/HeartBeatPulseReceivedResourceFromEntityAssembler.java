@@ -7,8 +7,8 @@ public class HeartBeatPulseReceivedResourceFromEntityAssembler {
     public static HeartBeatPulseReceivedResource toResourceFromEntity(HeartBeatPulse entity){
         return new HeartBeatPulseReceivedResource(
                 entity.getId(),
-                entity.getPulse(),
-                Math.toIntExact(entity.getHeartBeatBatch().getId())
+                Math.toIntExact(entity.getHeartBeatBatch().getId()),
+                entity.getPulse()
         );
     }
 }
