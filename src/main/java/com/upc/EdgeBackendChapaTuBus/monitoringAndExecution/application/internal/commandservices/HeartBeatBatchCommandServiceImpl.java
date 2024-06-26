@@ -8,10 +8,15 @@ import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.entitie
 import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.services.HeartBeatBatchCommandService;
 import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.services.LastTenPulsesService;
 import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.infraestructure.repositories.jpa.HeartBeatBatchRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class HeartBeatBatchCommandServiceImpl implements HeartBeatBatchCommandService {
@@ -19,7 +24,6 @@ public class HeartBeatBatchCommandServiceImpl implements HeartBeatBatchCommandSe
     private final HeartBeatBatchRepository heartBeatBatchRepository;
     private final RestTemplate restTemplate;
     private final LastTenPulsesService lastTenPulsesService;
-
     public HeartBeatBatchCommandServiceImpl(HeartBeatBatchRepository heartBeatBatchRepository, RestTemplate restTemplate, LastTenPulsesService lastTenPulsesService) {
         this.heartBeatBatchRepository = heartBeatBatchRepository;
         this.restTemplate = restTemplate;
@@ -35,21 +39,6 @@ public class HeartBeatBatchCommandServiceImpl implements HeartBeatBatchCommandSe
 
         return Optional.of(heartBeatBatch);
     }
-
-/*
-    @Override
-    public Optional<HeartBeatPulse> handle(ReceiveHeartBeatPulseInformationCommand command) {
-
-        Optional<HeartBeatBatch> heartBeatBatchOpt= heartBeatBatchRepository.findBySmartBandId(command.smartBandId());
-
-        if(heartBeatBatchOpt.isEmpty())return Optional.empty();
-
-        HeartBeatBatch heartBeatBatch = heartBeatBatchOpt.get();
-        HeartBeatPulse newHeartBeatPulse= heartBeatBatch.receiveNewPulse(command);
-        heartBeatBatchRepository.save(heartBeatBatch);
-        return Optional.of(newHeartBeatPulse);
-    }
-*/
 @Override
 public Optional<HeartBeatPulse> handle(ReceiveHeartBeatPulseInformationCommand command) {
     Optional<HeartBeatBatch> heartBeatBatchOpt = heartBeatBatchRepository.findBySmartBandId(command.smartBandId());
@@ -64,27 +53,49 @@ public Optional<HeartBeatPulse> handle(ReceiveHeartBeatPulseInformationCommand c
 
     if (lastTenPulsesService.size() == 10) {
         System.out.println("lastTenPulses size is 10. Sending average to cloud backend.");
-        sendHeartBeatAverageToCloudBackend();
+        sendHeartBeatAverageToCloudBackend(command.smartBandId());
         lastTenPulsesService.clear();
     }
 
     return Optional.of(newHeartBeatPulse);
 }
 
-    private void sendHeartBeatAverageToCloudBackend() {
+    private void sendHeartBeatAverageToCloudBackend(Long id) {
+
+        Long smartBandId = heartBeatBatchRepository.findById(id)
+                .map(HeartBeatBatch::getSmartBandId)
+                .orElseThrow(() -> new RuntimeException("No se pudo encontrar el SmartBandId actual"));
+        System.out.println("SmartBandId recuperado: " + smartBandId);
+
+        System.out.println("Iniciando envío de datos al cloud backend. ID recibido: " + id);
         int average = lastTenPulsesService.getLastTenPulses().stream()
                 .mapToInt(pulse -> Integer.parseInt(pulse.getPulse()))
                 .sum() / lastTenPulsesService.size();
         System.out.println("Calculated average pulse: " + average);
+        System.out.println("Número de pulsos utilizados para el cálculo: " + lastTenPulsesService.size());
 
-        //Actualizar esta función para mandarle la info al backend cloud
-/*        // Crear un objeto de datos para enviar
-        SensorData sensorData = new SensorData();
-        sensorData.setPulse(String.valueOf(average));
+        Map<String, Object> sensorData = new LinkedHashMap<>();
+        sensorData.put("SmartBandId", smartBandId);
+        sensorData.put("heartRate", average);
+        System.out.println("Datos a enviar: " + sensorData);
 
-        // Enviar al CloudBackend
-        restTemplate.postForObject("https://chapatubusbackend.azurewebsites.net/api/v1/sensor-data", sensorData, SensorData.class);
-        System.out.println("Sent average pulse to cloud backend.");*/
+        String cloudBackendUrl = "https://chapatubusbackend.azurewebsites.net/api/v1/smart-band/register-heart-rate-log";
+
+        try {
+            System.out.println("Intentando enviar datos a: " + cloudBackendUrl);
+            ResponseEntity<String> response = restTemplate.postForEntity(cloudBackendUrl, sensorData, String.class);
+            System.out.println("Respuesta recibida. Código de estado: " + response.getStatusCodeValue());
+            if (response.getStatusCode().is2xxSuccessful()) {
+                System.out.println("Sent average pulse to cloud backend successfully. SmartBandId: " + smartBandId);
+                System.out.println("Respuesta del servidor: " + response.getBody());
+            } else {
+                System.out.println("Failed to send average pulse to cloud backend. Status code: " + response.getStatusCode());
+                System.out.println("Respuesta del servidor: " + response.getBody());
+            }
+        } catch (Exception e) {
+            System.out.println("Error sending average pulse to cloud backend: " + e.getMessage());
+            e.printStackTrace(); // Esto imprimirá el stack trace completo
+        }
     }
     @Override
     public Optional<HeartBeatPulse> handle(SendHeartBeatAverageToCloudBackendCommand command) {

@@ -2,7 +2,6 @@ package com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.aggreg
 
 import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.commands.HeartBeat.CreateHeartBeatBatchCommand;
 import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.commands.WeightBatch.CreateWeightBatchCommand;
-import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.commands.WeightBatch.ReceiveBusCapacityInformationCommand;
 import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.entities.HeartBeatPulse;
 import com.upc.EdgeBackendChapaTuBus.monitoringAndExecution.domain.model.entities.RealTimeCapacity;
 import jakarta.persistence.*;
@@ -36,12 +35,5 @@ public class WeightBatch {
         this.unitBusId = command.unitBusId();
         this.realTimeCapacities = new ArrayList<>();
     }
-    public RealTimeCapacity receiveNewCapacity(ReceiveBusCapacityInformationCommand command){
-        RealTimeCapacity realTimeCapacity = RealTimeCapacity.builder()
-                .weightBatch(this)
-                .capacity(command.capacity())
-                .build();
-        this.realTimeCapacities.add(realTimeCapacity);
-        return realTimeCapacity;
-    }
+
 }
