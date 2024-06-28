@@ -60,14 +60,14 @@ public Optional<HeartBeatPulse> handle(ReceiveHeartBeatPulseInformationCommand c
     return Optional.of(newHeartBeatPulse);
 }
 
-    private void sendHeartBeatAverageToCloudBackend(Long id) {
+    private void sendHeartBeatAverageToCloudBackend(Long smartBandId) {
 
-        Long smartBandId = heartBeatBatchRepository.findById(id)
-                .map(HeartBeatBatch::getSmartBandId)
-                .orElseThrow(() -> new RuntimeException("No se pudo encontrar el SmartBandId actual"));
-        System.out.println("SmartBandId recuperado: " + smartBandId);
+        //Long smartBandId = heartBeatBatchRepository.findById(id)
+        //        .map(HeartBeatBatch::getSmartBandId)
+        //        .orElseThrow(() -> new RuntimeException("No se pudo encontrar el SmartBandId actual"));
+        //System.out.println("SmartBandId recuperado: " + smartBandId);
 
-        System.out.println("Iniciando envío de datos al cloud backend. ID recibido: " + id);
+        System.out.println("Iniciando envío de datos al cloud backend. ID recibido: " + smartBandId);
         int average = lastTenPulsesService.getLastTenPulses().stream()
                 .mapToInt(pulse -> Integer.parseInt(pulse.getPulse()))
                 .sum() / lastTenPulsesService.size();
